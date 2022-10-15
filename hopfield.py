@@ -2,8 +2,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # convert array to vector
-def get_neurons(image: list[list[int]]):
+def flatten(image: list[list[int]]):
     return np.reshape(np.array(image).flatten(), (25, 1))
+
+
+def train_neurons(images):
+    flattened_images = [flatten(image) for image in images]
+
+    weights = np.zeros((25, 25))
+    for image_vec in flattened_images:
+        image_weights = get_weights(image_vec)
+        weights += image_weights
+
+    return weights
 
 
 def get_weights(neurons: np.ndarray):
@@ -29,7 +40,7 @@ def draw(image: list[list[int]], title=None):
 
 
 def reconstruct(image: list[list[int]], weights: np.ndarray):
-    image = get_neurons(image)
+    image = flatten(image)
 
     reconstructed = [0] * 25
 
